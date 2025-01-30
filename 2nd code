@@ -1,1 +1,53 @@
+function enhancedImage = underwaterImageEnhancement(inputImage)
+    % Read the input image
+    I = imread(inputImage);
+    
+    % Step 1: Color Correction using Piecewise Linear Transformation
+    correctedImage = colorCorrection(I);
+    
+    % Step 2: Contrast Enhancement using Optimal Contrast Method
+    enhancedImage = contrastEnhancement(correctedImage);
+    
+    % Display the original and enhanced images
+    figure;
+    subplot(1, 2, 1);
+    imshow(I);
+    title('Original Image');
+    
+    subplot(1, 2, 2);
+    imshow(enhancedImage);
+    title('Enhanced Image');
+end
 
+function correctedImage = colorCorrection(I)
+    % Convert image to double for processing
+    I = im2double(I);
+    
+    % Calculate the average intensity of each channel
+    avgRed = mean(I(:,:,1), 'all');
+    avgGreen = mean(I(:,:,2), 'all');
+    avgBlue = mean(I(:,:,3), 'all');
+    
+    % Apply piecewise linear transformation to correct color distortion
+    correctedRed = I(:,:,1) + 0.5 * (avgGreen - avgRed) * (1 - I(:,:,1));
+    correctedGreen = I(:,:,2);
+    correctedBlue = I(:,:,3) + 0.5 * (avgGreen - avgBlue) * (1 - I(:,:,3));
+    
+    % Ensure values are within [0,1]
+    correctedRed = max(min(correctedRed, 1), 0);
+    correctedBlue = max(min(correctedBlue, 1), 0);
+    
+    % Combine the corrected channels
+    correctedImage = cat(3, correctedRed, correctedGreen, correctedBlue);
+end
+
+function enhancedImage = contrastEnhancement(I)
+    % Convert image to double for processing
+    I = im2double(I);
+    
+    % Apply histogram equalization for contrast enhancement
+    enhancedImage = adapthisteq(I);
+    
+    % Convert back to uint8 for display
+    enhancedImage = im2uint8(enhancedImage);
+end
