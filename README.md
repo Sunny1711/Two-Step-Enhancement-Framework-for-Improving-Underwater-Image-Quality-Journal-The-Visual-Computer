@@ -1,4 +1,4 @@
-# Underwater-Image-Quality-project
+# Two-Step-Enhancement-Framework-for-Improving-Underwater-Image-Quality-Journal-The-Visual-Computer
 % Two-Step Enhancement Framework for Improving Underwater Image Quality
 % Step 1: Color Correction
 % Step 2: Contrast Enhancement
